@@ -26,14 +26,24 @@ import org.json.JSONObject;
 
 
 
-import java.io.*;
 
 import java.io.*;
+import java.io.*;
+
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 
 
@@ -48,52 +58,43 @@ public class start
 	 */
 	public static void main(String[] args) throws JSONException, IOException, InterruptedException 
 	{
-		TeamController tc = new TeamController("");
-		tc.Run();
+		//Test Planera komunikacyjny;
+		
+		String sURL = "http://ip.jsontest.com/";//"http://search.twitter.com/search.json?q=%40apple";
+		PlannerController planer = new PlannerController(sURL);
+		String result;
+	
+		result = planer.Test("test");
+		System.out.println(result);
+		
+		/*RobotController robot = new RobotController();
+		robot.X = 1.1;
+		robot.Y = 1.2;
+		robot.ID = "Robot1";
+		robot.Angle = 22;
+		robot.P = 0.222;
+		
+		robot.SetTask("'goto 2.44725 4.22125 Node1', 'goto 1.46706 4.14285 Node4', 'search Space2', 'goto 0.673888 3.76964 Node6', 'goto 0.473391 2.96781 Node7', 'search Space3'");
+		
+		
+		LoggerUDP log = new LoggerUDP("127.0.0.1", 4321);
+		
+		log.SendReset();
+		while(true)
+		{
+			log.SendReset();
+			log.SendInsert(robot);
+			Thread.sleep(500);
+		}
+		//log.SendReset();
+		*/
+		/*TeamController tc = new TeamController("");
+		tc.Run();*/
+		
 	}
 }
 		
-		/* HttpClient httpClient = new DefaultHttpClient();
-		   
-		 //try {
-		      // this twitter call returns json results.
-		      // see this page for more info: <a href="https://dev.twitter.com/docs/using-search" title="https://dev.twitter.com/docs/using-search">https://dev.twitter.com/docs/using-search</a>
-		      // <a href="http://search.twitter.com/search.json?q=%40apple" title="http://search.twitter.com/search.json?q=%40apple">http://search.twitter.com/search.json?q=%40apple</a>
-		 
-		      // Example URL 1: this yahoo weather call returns results as an rss (xml) feed
-		      //HttpGet httpGetRequest = new HttpGet("http://weather.yahooapis.com/forecastrss?p=80020&u=f");
-		       
-		      // Example URL 2: this twitter api call returns results in a JSON format
-		 
-		      HttpGet httpGetRequest = new HttpGet("http://search.twitter.com/search.json?q=%40apple");
-		 
-		      // Execute HTTP request
-		      HttpResponse httpResponse = httpClient.execute(httpGetRequest);
-		 
-		      System.out.println("----------------------------------------");
-		      System.out.println(httpResponse.getStatusLine());
-		      System.out.println("----------------------------------------");
-		
-		      
-		      HttpEntity entity = httpResponse.getEntity();
-		      
-		      // If the response does not enclose an entity, there is no need
-		      // to bother about connection release
-		      byte[] buffer = new byte[1024];
-		      if (entity != null) 
-		      {
-		        InputStream inputStream = entity.getContent();
-		        //try 
-		        {
-		          int bytesRead = 0;
-		          BufferedInputStream bis = new BufferedInputStream(inputStream);
-		          while ((bytesRead = bis.read(buffer)) != -1) 
-		          {
-		            String chunk = new String(buffer, 0, bytesRead);
-		            System.out.println(chunk);
-		          }
-		        }
-		      }
+	
 		        
 		      
 		

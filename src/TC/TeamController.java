@@ -70,7 +70,7 @@ public class TeamController {
 	private void initRobotsLocation() throws Exception
 	{
 		for (int i = 0; i < robots.size(); i++) 
-			robots.get(i).GetLocation();
+			robots.get(i).GetCurrentLocation();
 	}
 
 	private void putRobotsInToMap() throws JSONException
@@ -97,8 +97,8 @@ public class TeamController {
 
 		try
 		{
-			initRobotsLocation(); //pobranie startowej pozycji robota
-			putRobotsInToMap(); //umiesc roboty na mapie 						
+			//initRobotsLocation(); //pobranie startowej pozycji robota
+			//putRobotsInToMap(); //umiesc roboty na mapie 						
 
 			currentJson = json.GetCurrentJSON();  
 			currentPlan = planner.GetPlan(currentJson); //pobierz plan

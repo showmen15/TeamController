@@ -4,14 +4,14 @@ import java.util.ArrayList;
 import java.io.*;
 import java.net.*;
 
-public class Logger 
+public class LoggerUDP 
 {
 	private DatagramSocket clientSocket; 
 	private InetAddress IPAddress;
 	private int port;
 
 
-	Logger(String IP,int iPort)
+	LoggerUDP(String IP,int iPort)
 	{
 		this.port = iPort;
 
@@ -52,13 +52,20 @@ public class Logger
 		send(tempOperation + tempParssedRobot);
 	}	
 
+	public void SendReset()
+	{
+		String tempOperation = "#reset;";
+	
+		send(tempOperation);
+	}
+	
 	private String parseRobot(RobotController robot)
 	{
 		String tempRobot = "";
 
 		tempRobot += robot.ID.toString() + ";" + robot.X + ";" + robot.Y + ";" + robot.Angle + ";";
 
-		ArrayList<Task> tempTasks = robot.GetTasksList();
+		ArrayList<Task> tempTasks = robot.GetGoToTasksList();  //GetTasksList();
 		Task itemTask; 
 
 		for(int i = 0; i < tempTasks.size();i++)

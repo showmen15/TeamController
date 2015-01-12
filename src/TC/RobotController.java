@@ -8,6 +8,7 @@ import java.util.List;
 import TC.Task.TaskType;
 import pl.edu.agh.amber.location.LocationCurrent;
 import pl.edu.agh.amber.drivetopoint.Point;
+import pl.edu.agh.amber.drivetopoint.Location;
 
 
 public class RobotController 
@@ -36,6 +37,11 @@ public class RobotController
 	private long time; //in seconds
 	private Date startTask; 
 
+	RobotController()
+	{
+		Tasks = new ArrayList<Task>();
+	}
+	
 	RobotController(String hostname,String id)
 	{
 		location = new LocationController(hostname, AmberPort);
@@ -80,7 +86,7 @@ public class RobotController
 		return tmpPoint;	
 	}
 	
-	public void GetLocation() throws Exception
+	public void GetCurrentLocation() throws Exception
 	{
 		LocationCurrent current = location.GetCurrentLocation();
 		X = current.getX();
@@ -89,6 +95,16 @@ public class RobotController
 		Angle = current.getAngle();
 		TimeStamp = current.getTimeStamp();		
 	}
+	
+	private void GetLocation()
+	{
+		Location loc = driveToPoint.getCurrentLocation();
+		X = loc.getX();
+		Y = loc.getY();
+		P = loc.getP();
+		Angle = loc.getAngle();
+		TimeStamp = loc.getTimeStamp();
+	}	
 	
 	public void SendTargetsList() throws IOException
 	{
@@ -102,7 +118,8 @@ public class RobotController
 	{
 		List<Point> targets = getPointToGo();
 		driveToPoint.RequestVisitedTargets();
-		List<Point> visitedTargets = driveToPoint.getVisitedTargets(); 
+		List<Point> visitedTargets = driveToPoint.getVisitedTargets();
+		GetLocation();		
 		
 		if(targets.size() == visitedTargets.size())
 		{
@@ -148,4 +165,21 @@ public class RobotController
 		return Tasks;		
 	}
 	
+	public ArrayList<Task> GetGoToTasksList()
+	{
+		ArrayList<Task> tempTask = new ArrayList<Task>();
+		
+		for (int i = 0; i < Tasks.size(); i++) 
+		{
+			if(Tasks.get(i).Type == TaskType.GoTo)
+				tempTask.add(Tasks.get(i));
+		}
+		
+		return tempTask;
+	}
+	
+//	public void TestTaskList()
+//	{
+//		
+//	}	
 }
