@@ -2,6 +2,7 @@ package TC;
 
 import java.awt.SecondaryLoop;
 import java.io.IOException;
+import java.net.InetAddress;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -27,6 +28,7 @@ import org.json.JSONObject;
 
 
 
+
 import java.io.*;
 import java.io.*;
 
@@ -36,9 +38,11 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
@@ -58,13 +62,31 @@ public class start
 	 */
 	public static void main(String[] args) throws JSONException, IOException, InterruptedException 
 	{
-		TCPClient tcp = new TCPClient("127.0.0.1", 13000);
+		
+		
+		String ipAddress = "172.0.0.1";
+	    InetAddress inet = InetAddress.getByName(ipAddress);
+
+	    System.out.println("Sending Ping Request to " + ipAddress);
+	    System.out.println(inet.isReachable(5000) ? "Host is reachable" : "Host is NOT reachable");
+
+	/*    ipAddress = "173.194.32.38";
+	    inet = InetAddress.getByName(ipAddress);
+
+	    System.out.println("Sending Ping Request to " + ipAddress);
+	    System.out.println(inet.isReachable(5000) ? "Host is reachable" : "Host is NOT reachable");*/
+	
+		
+		
+		/*TCPClient tcp = new TCPClient("127.0.0.1", 13000);
 		
 		tcp.Send("ale ma kota filemota");
 		
 		String ss = tcp.Recive();
 		
 		System.out.println(ss);
+		*/
+		
 		
 		//Test Planera komunikacyjny;
 		/*
