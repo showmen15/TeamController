@@ -62,14 +62,19 @@ public class start
 	 */
 	public static void main(String[] args) throws JSONException, IOException, InterruptedException 
 	{
+		/*
+		if(PingRobot.Ping("127.0.0.1"))
+			System.out.println("is true ");
+		else
+			System.out.println("is false ");
+	*/
 		
-		
-		String ipAddress = "172.0.0.1";
+		/*String ipAddress = "172.0.0.1";
 	    InetAddress inet = InetAddress.getByName(ipAddress);
 
 	    System.out.println("Sending Ping Request to " + ipAddress);
 	    System.out.println(inet.isReachable(5000) ? "Host is reachable" : "Host is NOT reachable");
-
+*/
 	/*    ipAddress = "173.194.32.38";
 	    inet = InetAddress.getByName(ipAddress);
 
