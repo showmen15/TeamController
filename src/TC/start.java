@@ -58,14 +58,22 @@ public class start
 	 */
 	public static void main(String[] args) throws JSONException, IOException, InterruptedException 
 	{
-		//Test Planera komunikacyjny;
+		TCPClient tcp = new TCPClient("127.0.0.1", 13000);
 		
+		tcp.Send("ale ma kota filemota");
+		
+		String ss = tcp.Recive();
+		
+		System.out.println(ss);
+		
+		//Test Planera komunikacyjny;
+		/*
 		String sURL = "http://ip.jsontest.com/";//"http://search.twitter.com/search.json?q=%40apple";
 		PlannerController planer = new PlannerController(sURL);
 		String result;
 	
 		result = planer.Test("test");
-		System.out.println(result);
+		System.out.println(result);*/
 		
 		/*RobotController robot = new RobotController();
 		robot.X = 1.1;
