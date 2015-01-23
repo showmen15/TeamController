@@ -5,7 +5,7 @@ import java.net.*;
 
 public class TCPClient 
 {
-   private static int buffSize = 4048;
+   private static int buffSize = 50000;
 	
 	private Socket clientSocket;
 	private DataOutputStream outToServer;
@@ -27,8 +27,14 @@ public class TCPClient
 		clientSocket.close();
 	}
 
-	public void Send(String message) throws IOException
+	public void Send(String message) throws IOException, InterruptedException
 	{
+		String sizeMessage = Integer.toString(message.length());
+		
+		outToServer.write(sizeMessage.getBytes(), 0, sizeMessage.length());
+		
+		Thread.sleep(200);
+		
 		outToServer.write(message.getBytes(), 0, message.length());
 	}
 

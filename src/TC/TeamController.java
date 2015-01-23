@@ -30,14 +30,16 @@ public class TeamController {
 		//lokalizacja pliku JASON-a
 
 		String URL = "";
-		String sPath = "D:/drop/Dropbox/TeamControler/TC/test/map/MazeRoboLabFullMap.roson";
-
+		String sPath = "C:/Users/szsz/git/TeamController/map/MazeRoboLabFullMap_graph.roson";
+		String sIP = "127.0.0.1";
+		int port = 13000;
+			
 		json = new JsonHelper(sPath);		
-		planner = new PlannerController(URL);
+		planner = new  PlannerController(sIP,port); //new PlannerController(URL);
 
 		robots = new ArrayList<RobotController>();
 
-		AddRobot("192.168.2.203", "Robot203");
+		AddRobot("192.168.2.202", "Robot203");
 		//AddRobot("192.168.2.202", "Robot202");		
 	}
 
@@ -97,12 +99,12 @@ public class TeamController {
 
 		try
 		{
-			//initRobotsLocation(); //pobranie startowej pozycji robota
-			//putRobotsInToMap(); //umiesc roboty na mapie 						
+			initRobotsLocation(); //pobranie startowej pozycji robota
+			putRobotsInToMap(); //umiesc roboty na mapie 						
 
 			currentJson = json.GetCurrentJSON();  
 			currentPlan = planner.GetPlan(currentJson); //pobierz plan
-
+/*
 			manageTasksToRobot(currentPlan);  //rozdziel zadania na roboty
 
 			runGoToPointRobots(); //wysli zadania do robotow
@@ -112,7 +114,7 @@ public class TeamController {
 				Thread.sleep(waitTime); //czekaj na wyniki
 
 				checkVisitedTask(); //sprawdz czy robot dotarl do punktow 
-			}			
+			}*/			
 		}
 		catch(Exception ex)
 		{

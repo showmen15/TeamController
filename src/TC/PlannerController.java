@@ -22,14 +22,14 @@ public class PlannerController
 
 	private HttpClient client;
 	private HttpPost post;
-
+/*
 	public PlannerController(String sURL)
 	{
 		URL = sURL;
 
 		client = new DefaultHttpClient();
 		post = new HttpPost(sURL);
-	}
+	}*/
 
 	TCPClient tcpClient;
 	
@@ -38,7 +38,7 @@ public class PlannerController
 		tcpClient = new TCPClient(sIP, port);
 	}
 	
-	public String GetPlan(String sJSON) throws ClientProtocolException, IOException
+	public String GetPlan(String sJSON) throws ClientProtocolException, IOException, InterruptedException
 	{
 		//logika dla TCP awaryjna
 		String tmpPlan;

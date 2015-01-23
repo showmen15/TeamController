@@ -63,15 +63,18 @@ public class start
 	public static void main(String[] args) throws JSONException, IOException, InterruptedException 
 	{
 		
+		TeamController tc = new TeamController("");
+		tc.Run();
+		
 		//planer wersja awaryjna 
-		String sIP = "127.0.0.1";
+		/*String sIP = "127.0.0.1";
 		int port = 13000;
 		PlannerController planer = new PlannerController(sIP,port);
 		
 		String result;
 		result = planer.GetPlan("tu JSON");
 		System.out.println(result);
-		
+		*/
 		/*
 		if(PingRobot.Ping("127.0.0.1"))
 			System.out.println("is true ");
