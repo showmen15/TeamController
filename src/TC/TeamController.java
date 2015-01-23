@@ -77,7 +77,7 @@ public class TeamController {
 			robots.get(i).GetCurrentLocation();
 	}
 
-	private void putRobotsInToMap() throws JSONException
+	private void putRobotsInToMap() throws Exception
 	{	
 		for (int i = 0; i < robots.size(); i++) 
 			json.AddRobot(new MazeRobot(robots.get(i).ID, new Point3D(robots.get(i).X,robots.get(i).Y, 0)));
@@ -123,18 +123,5 @@ public class TeamController {
 			System.out.println("Run " + ex);
 			ex.printStackTrace();
 		}
-	}
-	
-	private void initBB()
-	{
-		
-	}
-	
-	public 
-	
-	private String getSpace(double X,double Y)
-	{
-		
-	}
-	
+	}	
 }
