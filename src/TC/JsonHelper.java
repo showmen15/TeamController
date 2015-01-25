@@ -1,5 +1,6 @@
 package TC;
 
+import java.io.Console;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -67,10 +68,36 @@ public class JsonHelper
 
 	private String getSpaceName(MazeRobot robot) throws Exception 
 	{
+		/*
+		for(int i = 0; i < box.size(); i++)
+		{
+			System.out.print(box.get(i).BBName);
+			
+			System.out.print("\t");
+			
+			System.out.print(box.get(i).x_start);
+			
+			System.out.print("\t");
+			
+			System.out.print(box.get(i).x_end);
+			
+			System.out.print("\t");
+			
+			System.out.print(box.get(i).y_start);
+					
+			System.out.print("\t");
+			
+		    System.out.print(box.get(i).y_end);
+		    
+		    System.out.println();
+		}
+			*/
+		
+		
 		for(int i = 0; i < box.size(); i++)
 		{			
 			if((box.get(i).x_start <= robot.Position.x) && (box.get(i).x_end  >= robot.Position.x) &&
-			   (box.get(i).y_start <= robot.Position.y) && (box.get(i).y_end <= robot.Position.y))
+			   (box.get(i).y_start <= robot.Position.y) && (box.get(i).y_end >= robot.Position.y))
 				return box.get(i).BBName;
 		}
 		
@@ -119,7 +146,7 @@ public class JsonHelper
 		{	
 			tempRobotID =  robots.getJSONObject(i).getString("id");
 
-			if(tempRobotID == ID)
+			if(tempRobotID.equals(ID))
 				return i;
 		}
 
@@ -134,7 +161,7 @@ public class JsonHelper
 		{	
 			tempRobotSpaceRobotsID =  spaceRobots.getJSONObject(i).getString("robotId");
 
-			if(tempRobotSpaceRobotsID == ID)
+			if(tempRobotSpaceRobotsID.equals(ID))
 				return i;
 		}
 
@@ -149,7 +176,7 @@ public class JsonHelper
 		{	
 			tempWallsID =  walls.getJSONObject(i).getString("id");
 
-			if(tempWallsID == ID)
+			if(tempWallsID.equals(ID))
 				return i;
 		}
 
@@ -191,26 +218,26 @@ public class JsonHelper
 		String wallID;		
 		int index;
 		double x_start,x_end,y_start, y_end;
-		JSONArray from,to;
+		JSONObject from,to;
 		JSONObject fromObj, toObj;
 
+		JSONObject temp, temp1;
+		JSONArray tempArray;
+		
 		for(int i = 0; i < space_walls.length(); i++)
 		{	
 			wallID = space_walls.getJSONObject(i).getString("wallId");
 			index = getWalls(walls,wallID);
-			from = walls.getJSONObject(index).getJSONArray("from");
-			fromObj = from.getJSONObject(0);
+			
+			from = walls.getJSONObject(index).getJSONObject("from");
+			x_start = from.getDouble("x");
+			y_start = from.getDouble("y");
 
-			x_start = fromObj.getDouble("x");
-			y_start = fromObj.getDouble("y");
+			to = walls.getJSONObject(index).getJSONObject("to");
+			x_end = to.getDouble("x");
+			y_end = to.getDouble("y");
 
-			to = walls.getJSONObject(index).getJSONArray("to");
-			toObj = to.getJSONObject(0);
-
-			x_end = toObj.getDouble("x");
-			y_end = toObj.getDouble("y");
-
-			insertUpateBox(x_start,x_end,y_start, y_end,wallID);
+			insertUpateBox(x_start,x_end,y_start, y_end,space_walls.getJSONObject(i).getString("spaceId"));
 		}
 	}
 
@@ -221,14 +248,14 @@ public class JsonHelper
 		if(tempBB != null)
 			tempBB.initBB(x_start, x_end,  y_start, y_end);
 		else
-			box.add(new BB(x_start, x_end,  y_start, y_end));			
+			box.add(new BB(x_start, x_end,  y_start, y_end,spaceId));			
 	}
 
 	private BB getIndex(String spaceId)
 	{	
 		for(int i = 0; i < box.size(); i++)
 		{	
-			if(box.get(i).BBName == spaceId)
+			if(box.get(i).BBName.equals(spaceId))
 				return box.get(i);
 		}
 

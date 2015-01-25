@@ -12,13 +12,15 @@ public class BB
 		BBName = sBBName;		
 	}
 	
-	public BB(double xs,double xe,double ys,double ye)
+	public BB(double xs,double xe,double ys,double ye,String spaceID)
 	{
 		x_start = xs;
 		x_end = xe;
 		
 		y_start = ys;		
 		y_end = ye;
+		
+		BBName = spaceID;				
 	}
 	
 	public void initBB(double xs,double xe,double ys,double ye)

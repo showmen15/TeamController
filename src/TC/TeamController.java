@@ -19,6 +19,8 @@ public class TeamController {
 
 	private ArrayList<BB> box;
 	
+	private LoggerUDP logger;
+	
 	//in ms
 	private long waitTime;
 
@@ -32,17 +34,21 @@ public class TeamController {
 		//lokalizacja pliku JASON-a
 
 		String URL = "";
-		String sPath = "C:/Users/szsz/git/TeamController/map/MazeRoboLabFullMap_graphSimpleKopia.roson";
+		String sPath = "./map/MazeRoboLabFullMap_graph.roson";
 		String sIP = "127.0.0.1";
 		int port = 13000;
 			
 		json = new JsonHelper(sPath);		
 		planner = new  PlannerController(sIP,port); //new PlannerController(URL);
 
+		String  sIPLogger = "127.0.0.1"; //ustawic na szsz
+		int sPortLogger = 4321;
+		logger = new LoggerUDP(sIPLogger,sPortLogger);
+				
 		robots = new ArrayList<RobotController>();
 
-		AddRobot("192.168.2.202", "Robot203");
-		//AddRobot("192.168.2.202", "Robot202");		
+		AddRobot("192.168.2.202", "Robot202");
+		//AddRobot("192.168.2.203", "Robot203");		
 	}
 
 	private void AddRobot(String IP,String RobotID)
@@ -94,29 +100,38 @@ public class TeamController {
 		for (int i = 0; i < robots.size(); i++) 
 			robots.get(i).CompleteTasks();
 	}
-
+	
+	private void sendVisualisation()
+	{
+		for (int i = 0; i < robots.size(); i++) 
+			logger.SendInsert(robots.get(i));
+	}
+	
 	public void Run()
 	{
 		waitTime = 1000;
 
 		try
 		{
+			
 			initRobotsLocation(); //pobranie startowej pozycji robota
-			//putRobotsInToMap(); //umiesc roboty na mapie 						
+			putRobotsInToMap(); //umiesc roboty na mapie 						
 
-			currentJson = json.GetCurrentJSON();  
-			currentPlan = planner.GetPlan(currentJson); //pobierz plan
-/*
+			currentJson = json.GetCurrentJSON();  			
+			currentPlan = planner.GetPlan(currentJson); //pobierz plan			
+
 			manageTasksToRobot(currentPlan);  //rozdziel zadania na roboty
 
-			runGoToPointRobots(); //wysli zadania do robotow
+			//runGoToPointRobots(); //wysli zadania do robotow
 
 			while(true)
 			{
 				Thread.sleep(waitTime); //czekaj na wyniki
 
-				checkVisitedTask(); //sprawdz czy robot dotarl do punktow 
-			}*/			
+				//checkVisitedTask(); //sprawdz czy robot dotarl do punktow 
+				
+				sendVisualisation(); //odswiez wizualizacje
+			}			
 		}
 		catch(Exception ex)
 		{

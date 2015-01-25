@@ -43,8 +43,7 @@ public class PlannerController
 		//logika dla TCP awaryjna
 		String tmpPlan;
 		
-		tcpClient.Send(sJSON);
-		tmpPlan = tcpClient.Recive();
+		tmpPlan = tcpClient.CommunicateWithPlanner(sJSON); 
 		return tmpPlan;
 		
 		//logika dla Rest-a

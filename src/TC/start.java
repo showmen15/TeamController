@@ -61,8 +61,7 @@ public class start
 	 * @throws ExecutionException 
 	 */
 	public static void main(String[] args) throws JSONException, IOException, InterruptedException 
-	{
-		
+	{		
 		TeamController tc = new TeamController("");
 		tc.Run();
 		

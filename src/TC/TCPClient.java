@@ -12,33 +12,61 @@ public class TCPClient
 	private BufferedReader inFromServer;
 	
 	private char[] buff;
+	private String IP;
+	private int Port;
+	
 
-	public TCPClient(String sPlannerIP,int port) throws UnknownHostException, IOException
+	public TCPClient(String sPlannerIP,int port)
 	{
-		clientSocket = new Socket(sPlannerIP, port);
-		outToServer = new DataOutputStream(clientSocket.getOutputStream());
-		inFromServer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+		IP =sPlannerIP;
+		Port = port;
 		
 		buff = new char[buffSize];
 	}
 
 	protected void finalize() throws IOException
 	{
-		clientSocket.close();
+		
 	}
 
-	public void Send(String message) throws IOException, InterruptedException
+	private void initTcpClient(String sPlannerIP,int port) throws UnknownHostException, IOException
+	{
+		clientSocket = new Socket(sPlannerIP, port);
+		outToServer = new DataOutputStream(clientSocket.getOutputStream());
+		inFromServer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+	}
+	
+	private void endTcpClient() throws IOException
+	{
+		outToServer.close();
+		inFromServer.close();		
+		clientSocket.close();
+	}
+	
+	public String CommunicateWithPlanner(String message) throws UnknownHostException, IOException, InterruptedException
+	{
+		String temp;
+		
+		initTcpClient(IP,Port);
+		Send(message);
+		temp = Recive();
+		endTcpClient();
+		
+		return temp;
+	}
+	
+	private void Send(String message) throws IOException, InterruptedException
 	{
 		String sizeMessage = Integer.toString(message.length());
 		
 		outToServer.write(sizeMessage.getBytes(), 0, sizeMessage.length());
 		
-		Thread.sleep(200);
+		Thread.sleep(1000);
 		
 		outToServer.write(message.getBytes(), 0, message.length());
 	}
 
-	public String Recive() throws IOException
+	private String Recive() throws IOException
 	{	
 		inFromServer.read(buff, 0, buffSize);
 		
