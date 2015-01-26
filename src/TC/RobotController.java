@@ -18,10 +18,10 @@ public class RobotController
 	public double P;
 	public double Angle;
 	public double TimeStamp;
-		
+
 	private static int AmberPort = 26233; 
-	
-	private static double R = 30;
+
+	private static double R = 0.35;
 	private static double deltaTime = 30; //30 sekund
 	private static double RobotV = 0.015;
 
@@ -29,25 +29,29 @@ public class RobotController
 	private DriveToPointController driveToPoint;
 
 	private ArrayList<Task> Tasks;
+
+	private ArrayList<Task> GoToTasks;
 	//private ArrayList<Task> EndTasks;
 	//private int iTasksCount;
-	
+
 	public String ID; 
-	
+
 	private long time; //in seconds
 	private Date startTask; 
 
 	RobotController()
 	{
 		Tasks = new ArrayList<Task>();
+		GoToTasks = new ArrayList<Task>();
 	}
-	
+
 	RobotController(String hostname,String id)
 	{
 		location = new LocationController(hostname, AmberPort);
 		driveToPoint = new DriveToPointController(hostname, AmberPort);
 		ID = id;	
 		Tasks = new ArrayList<Task>();
+		GoToTasks = new ArrayList<Task>();
 	}
 
 	private String[] parseTaskForRobot(String tasks)
@@ -67,25 +71,27 @@ public class RobotController
 	{
 		String[] taskList = parseTaskForRobot(tasks);
 		Tasks.clear();
-		//EndTasks.clear();
+		GoToTasks.clear();
 
 		for (int i = 0; i < taskList.length; i++) 
-			Tasks.add(new Task(taskList[i]));		
+			Tasks.add(new Task(taskList[i]));
+
+		GoToTasks = getGoToTask(Tasks); 
 	}
 
 	private List<Point> getPointToGo()
 	{
 		List<Point> tmpPoint = new  ArrayList<Point>();
-		
+
 		for (int i = 0; i < Tasks.size(); i++) 
 		{
-		 	if(Tasks.get(i).Type == TaskType.GoTo)
-		 		tmpPoint.add(new Point(Tasks.get(i).X,Tasks.get(i).Y,R));
+			if(Tasks.get(i).Type == TaskType.GoTo)
+				tmpPoint.add(new Point(Tasks.get(i).X,Tasks.get(i).Y,R));
 		}
-		
+
 		return tmpPoint;	
 	}
-	
+
 	public void GetCurrentLocation() throws Exception
 	{
 		LocationCurrent current = location.GetCurrentLocation();
@@ -95,7 +101,7 @@ public class RobotController
 		Angle = current.getAngle();
 		TimeStamp = current.getTimeStamp();		
 	}
-	
+
 	private void GetLocation()
 	{
 		Location loc = driveToPoint.getCurrentLocation();
@@ -105,25 +111,26 @@ public class RobotController
 		Angle = loc.getAngle();
 		TimeStamp = loc.getTimeStamp();
 	}	
-	
+
 	public void SendTargetsList() throws IOException
 	{
 		List<Point> empty = new ArrayList<>();
 		driveToPoint.SetTargets(empty);
-		
+
 		List<Point> targets = getPointToGo();
 		driveToPoint.SetTargets(targets);
 		startTask = new Date();
 		time = countTimeTask(RobotV,X,Y,targets.get(targets.size() - 1).x,targets.get(targets.size() - 1).y,deltaTime);
 	}
-	
+
 	public Boolean CompleteTasks() throws Exception	
 	{
 		List<Point> targets = getPointToGo();
 		driveToPoint.RequestVisitedTargets();
 		List<Point> visitedTargets = driveToPoint.getVisitedTargets();
-		GetLocation();		
-		
+		GetLocation();
+		markTaskAsEnd(visitedTargets.size());
+
 		if(targets.size() == visitedTargets.size())
 		{
 			time = 0;
@@ -137,52 +144,70 @@ public class RobotController
 	public Boolean IsTimeElapsedForTask()
 	{
 		return false;
-		
 	}
-	
-//	public void ReciveVisitedTargetList() throws Exception
-//	{
-//		List<Point> targets = getPointToGo();
-//		List<Point> visitedTargets = driveToPoint.GetVisitedTargets();
-//		
-//		
-//		if()
-//	}
-	
+
+	private void markTaskAsEnd(int endTaskNumber)
+	{
+		for(int i = 0; i < endTaskNumber; i++)
+			GoToTasks.get(i).IsEnd = true;				
+	}
+
+	private ArrayList<Task> getGoToTask(ArrayList<Task> tasks)
+	{
+		ArrayList<Task> temp = new ArrayList<>();
+
+		for(int i = 0; i < tasks.size();i++)
+		{
+			if(tasks.get(i).Type == TaskType.GoTo)
+				temp.add(tasks.get(i));
+		}
+
+		return temp;
+	}
+
+	//	public void ReciveVisitedTargetList() throws Exception
+	//	{
+	//		List<Point> targets = getPointToGo();
+	//		List<Point> visitedTargets = driveToPoint.GetVisitedTargets();
+	//		
+	//		
+	//		if()
+	//	}
+
 	private long countTimeForTask(Date start)
 	{
 		return 0;	
 	}
-	
-	
+
+
 	private long  countTimeTask(double V,double StartX,double StartY,double EndX,double EndY,double delta)
 	{
 		double distance = Math.sqrt( Math.pow(StartX - EndX, 2) + Math.pow(StartY - EndY, 2));
-		
+
 		return  (new Double((distance / V) + delta)).longValue();
-		
+
 	}
-	
+
 	public ArrayList<Task> GetTasksList()
 	{
 		return Tasks;		
 	}
-	
+
 	public ArrayList<Task> GetGoToTasksList()
 	{
 		ArrayList<Task> tempTask = new ArrayList<Task>();
-		
+
 		for (int i = 0; i < Tasks.size(); i++) 
 		{
 			if(Tasks.get(i).Type == TaskType.GoTo)
 				tempTask.add(Tasks.get(i));
 		}
-		
+
 		return tempTask;
 	}
-	
-//	public void TestTaskList()
-//	{
-//		
-//	}	
+
+	//	public void TestTaskList()
+	//	{
+	//		
+	//	}	
 }
