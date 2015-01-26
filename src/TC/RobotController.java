@@ -21,7 +21,7 @@ public class RobotController
 		
 	private static int AmberPort = 26233; 
 	
-	private static double R = 10;
+	private static double R = 30;
 	private static double deltaTime = 30; //30 sekund
 	private static double RobotV = 0.015;
 
@@ -108,6 +108,9 @@ public class RobotController
 	
 	public void SendTargetsList() throws IOException
 	{
+		List<Point> empty = new ArrayList<>();
+		driveToPoint.SetTargets(empty);
+		
 		List<Point> targets = getPointToGo();
 		driveToPoint.SetTargets(targets);
 		startTask = new Date();

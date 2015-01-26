@@ -11,9 +11,9 @@
 	<classpathentry kind="lib" path="rest/httpclient-cache-4.3.5.jar"/>
 	<classpathentry kind="lib" path="rest/httpcore-4.3.2.jar"/>
 	<classpathentry kind="lib" path="rest/httpcore-nio-4.3.2.jar"/>
-	<classpathentry kind="lib" path="D:/drop/Dropbox/TeamControler/TC/test/jar/amber-java-common-1.0-20150124.112203-1.jar"/>
-	<classpathentry kind="lib" path="D:/drop/Dropbox/TeamControler/TC/test/jar/amber-java-drive-to-point-1.0-20150124.112206-1.jar"/>
-	<classpathentry kind="lib" path="D:/drop/Dropbox/TeamControler/TC/test/jar/amber-java-drive-to-point-1.0-20150124.112206-1-sources.jar"/>
-	<classpathentry kind="lib" path="D:/drop/Dropbox/TeamControler/TC/test/jar/amber-java-location-1.0-20150124.112209-1.jar"/>
+	<classpathentry kind="lib" path="jar/amber-java-common-1.0-20150124.112203-1.jar"/>
+	<classpathentry kind="lib" path="jar/amber-java-drive-to-point-1.0-20150124.112206-1-sources.jar"/>
+	<classpathentry kind="lib" path="jar/amber-java-drive-to-point-1.0-20150124.112206-1.jar"/>
+	<classpathentry kind="lib" path="jar/amber-java-location-1.0-20150124.112209-1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

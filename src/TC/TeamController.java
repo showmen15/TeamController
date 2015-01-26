@@ -41,7 +41,7 @@ public class TeamController {
 		json = new JsonHelper(sPath);		
 		planner = new  PlannerController(sIP,port); //new PlannerController(URL);
 
-		String  sIPLogger = "127.0.0.1"; //ustawic na szsz
+		String  sIPLogger = "192.168.2.101"; //ustawic na szsz
 		int sPortLogger = 4321;
 		logger = new LoggerUDP(sIPLogger,sPortLogger);
 				
@@ -122,13 +122,13 @@ public class TeamController {
 
 			manageTasksToRobot(currentPlan);  //rozdziel zadania na roboty
 
-			//runGoToPointRobots(); //wysli zadania do robotow
+			runGoToPointRobots(); //wysli zadania do robotow
 
 			while(true)
 			{
 				Thread.sleep(waitTime); //czekaj na wyniki
 
-				//checkVisitedTask(); //sprawdz czy robot dotarl do punktow 
+				checkVisitedTask(); //sprawdz czy robot dotarl do punktow 
 				
 				sendVisualisation(); //odswiez wizualizacje
 			}			
