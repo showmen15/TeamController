@@ -21,7 +21,7 @@ public class RobotController
 
 	private static int AmberPort = 26233; 
 
-	private static double R = 0.35;
+	private static double R = 0.3;
 	private static double deltaTime = 30; //30 sekund
 	private static double RobotV = 0.015;
 
