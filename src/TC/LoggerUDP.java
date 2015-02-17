@@ -52,7 +52,6 @@ public class LoggerUDP
 		send(tempOperation + tempParssedRobot);
 	}	
 
-	
 	public void SendReset()
 	{
 		String tempOperation = "#reset;";
