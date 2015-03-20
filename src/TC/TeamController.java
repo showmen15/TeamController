@@ -41,13 +41,16 @@ public class TeamController {
 		json = new JsonHelper(sPath);		
 		planner = new  PlannerController(sIP,port); //new PlannerController(URL);
 
-		String  sIPLogger = "192.168.2.101"; //ustawic na szsz
+		String  sIPLogger = "192.168.2.102"; //ustawic na szsz
 		int sPortLogger = 4321;
 		logger = new LoggerUDP(sIPLogger,sPortLogger);
 				
 		robots = new ArrayList<RobotController>();
 
-		AddRobot("192.168.2.202", "Robot202");
+		//AddRobot("192.168.2.210", "Robot210");
+		//AddRobot("192.168.2.206", "Robot206");
+		AddRobot("192.168.2.208", "Robot208");
+		//AddRobot("192.168.2.209", "Robot209");
 		//AddRobot("192.168.2.203", "Robot203");		
 	}
 
@@ -107,12 +110,19 @@ public class TeamController {
 			logger.SendInsert(robots.get(i));
 	}
 	
+	private void stopAllRobot() throws IOException
+	{
+		for (int i = 0; i < robots.size(); i++) 
+			robots.get(i).StopRobot();		
+	}
+	
 	public void Run()
 	{
-		waitTime = 1000;
+		waitTime = 500;
 
 		try
 		{
+			stopAllRobot();
 			
 			initRobotsLocation(); //pobranie startowej pozycji robota
 			putRobotsInToMap(); //umiesc roboty na mapie 						

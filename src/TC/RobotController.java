@@ -206,6 +206,12 @@ public class RobotController
 		return tempTask;
 	}
 
+	public void StopRobot() throws IOException
+	{
+		List<Point> empty = new ArrayList<>();
+		driveToPoint.SetTargets(empty);
+	}
+	
 	//	public void TestTaskList()
 	//	{
 	//		
