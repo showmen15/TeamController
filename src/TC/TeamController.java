@@ -34,7 +34,7 @@ public class TeamController {
 		//lokalizacja pliku JASON-a
 
 		String URL = "";
-		String sPath = "./map/MazeRoboLabFullMap_graph.roson";
+		String sPath =  "D:/Desktop/LabiryntMapy/Test4.roson"; //"./map/MazeRoboLabFullMap_graph.roson";
 		String sIP = "127.0.0.1";
 		int port = 13000;
 			
@@ -49,7 +49,7 @@ public class TeamController {
 
 		//AddRobot("192.168.2.210", "Robot210");
 		//AddRobot("192.168.2.206", "Robot206");
-		AddRobot("192.168.2.208", "Robot208");
+		//AddRobot("192.168.2.208", "Robot208");
 		//AddRobot("192.168.2.209", "Robot209");
 		//AddRobot("192.168.2.203", "Robot203");		
 	}
@@ -127,6 +127,9 @@ public class TeamController {
 			initRobotsLocation(); //pobranie startowej pozycji robota
 			putRobotsInToMap(); //umiesc roboty na mapie 						
 
+			//json.GateBlocked("Wall127"); //ustawianie zamknietych drzwi			
+			//json.SetSpaceSearched("Space129"); //ustawianie przeszukanych pomieszczen
+			
 			currentJson = json.GetCurrentJSON();  			
 			currentPlan = planner.GetPlan(currentJson); //pobierz plan			
 

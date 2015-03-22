@@ -16,6 +16,10 @@ public class JsonHelper
 	private JSONObject currentJASON;
 	private JSONArray robots; 
 	private JSONArray spaceRobots;
+	private JSONArray gateNodes;
+	private JSONArray spaces;
+	private JSONArray nodeNodes;
+	private JSONArray gates;
 
 	private ArrayList<BB> box;
 
@@ -31,6 +35,11 @@ public class JsonHelper
 			robots =  currentJASON.getJSONArray("robots");
 			spaceRobots = currentJASON.getJSONArray("space-robots");
 
+			gateNodes =  currentJASON.getJSONArray("gate-nodes");
+			spaces = currentJASON.getJSONArray("spaces");
+			nodeNodes = currentJASON.getJSONArray("node-nodes");
+			gates = currentJASON.getJSONArray("gates");
+			
 			box = new ArrayList<>();
 
 			initBB();
@@ -66,41 +75,114 @@ public class JsonHelper
 		spaceRobots.put(newRobotSpaceRobots);	
 	}
 
+	public void GateBlocked(String gateName) throws Exception
+	{		
+		ArrayList<String> gateNodesList = getGateNodes(gateName);
+
+		if(gateNodesList.size() != 2)
+			throw new Exception("Wrong number of gateNodes (GateNodesList is != 2)");
+
+		setGateBlocked(gateName);
+		setNodeNodesBlocked(gateNodesList.get(0),gateNodesList.get(1));
+	}
+	
+	public void SetSpaceSearched(String spaceId) throws JSONException
+	{
+		JSONObject tempObj; 
+		
+		for (int i = 0; i < spaces.length(); i++) 
+		{
+			tempObj = spaces.getJSONObject(i);
+			
+			if(tempObj.getString("id").compareTo(spaceId) == 0)
+				tempObj.put("searched", 1);
+			else
+				continue;
+		}	
+	}	
+	
+	private void setGateBlocked(String gateName) throws JSONException 
+	{
+		JSONObject tempObj;
+		
+		for (int i = 0; i < gates.length(); i++) 
+	 	{
+			tempObj = gates.getJSONObject(i);
+			
+			if(tempObj.getString("id").compareTo(gateName) == 0)
+				tempObj.put("blocked", 1.0);
+			else
+				continue;
+		}	
+	}
+
+	private void setNodeNodesBlocked(String sNodeFromId,String sNodeToId) throws JSONException 
+	{			
+		JSONObject tempObj;
+		String tempNodeFromId;
+		String tempNodeToId;
+
+		for (int i = 0; i < nodeNodes.length(); i++) 
+		{
+			tempObj = nodeNodes.getJSONObject(i);
+			tempNodeFromId = tempObj.getString("nodeFromId");
+			tempNodeToId = tempObj.getString("nodeToId");
+
+			if(((sNodeFromId.compareTo(tempNodeFromId) == 0 )  && (sNodeToId.compareTo(tempNodeToId) == 0 )) || ((sNodeFromId.compareTo(tempNodeToId) == 0) && (sNodeToId.compareTo(tempNodeFromId) == 0)))
+				nodeNodes.getJSONObject(i).put("blocked", 1.0);			
+		}	
+	}
+
+	private ArrayList<String> getGateNodes(String wallName) throws JSONException
+	{
+		ArrayList<String> tmpGateNodes = new ArrayList<String>();	
+		
+		for (int i = 0; i < gateNodes.length(); i++) 
+		{			
+			if(gateNodes.getJSONObject(i).getString("gateId").compareTo(wallName) == 0)
+				tmpGateNodes.add(gateNodes.getJSONObject(i).getString("nodeId"));
+			else
+				continue;
+		}		
+
+		return tmpGateNodes;
+	}
+
 	private String getSpaceName(MazeRobot robot) throws Exception 
 	{
 		/*
 		for(int i = 0; i < box.size(); i++)
 		{
 			System.out.print(box.get(i).BBName);
-			
+
 			System.out.print("\t");
-			
+
 			System.out.print(box.get(i).x_start);
-			
+
 			System.out.print("\t");
-			
+
 			System.out.print(box.get(i).x_end);
-			
+
 			System.out.print("\t");
-			
+
 			System.out.print(box.get(i).y_start);
-					
+
 			System.out.print("\t");
-			
+
 		    System.out.print(box.get(i).y_end);
-		    
+
 		    System.out.println();
 		}
-			*/
-		
-		
+		 */
+
+
 		for(int i = 0; i < box.size(); i++)
 		{			
 			if((box.get(i).x_start <= robot.Position.x) && (box.get(i).x_end  >= robot.Position.x) &&
-			   (box.get(i).y_start <= robot.Position.y) && (box.get(i).y_end >= robot.Position.y))
+					(box.get(i).y_start <= robot.Position.y) && (box.get(i).y_end >= robot.Position.y))
 				return box.get(i).BBName;
 		}
-		
+
 		throw new Exception("getSpaceName -> Not define SpaceName");
 	}
 
@@ -223,12 +305,12 @@ public class JsonHelper
 
 		JSONObject temp, temp1;
 		JSONArray tempArray;
-		
+
 		for(int i = 0; i < space_walls.length(); i++)
 		{	
 			wallID = space_walls.getJSONObject(i).getString("wallId");
 			index = getWalls(walls,wallID);
-			
+
 			from = walls.getJSONObject(index).getJSONObject("from");
 			x_start = from.getDouble("x");
 			y_start = from.getDouble("y");
