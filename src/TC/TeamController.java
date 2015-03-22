@@ -129,7 +129,8 @@ public class TeamController {
 
 			//json.GateBlocked("Wall127"); //ustawianie zamknietych drzwi			
 			//json.SetSpaceSearched("Space129"); //ustawianie przeszukanych pomieszczen
-			
+		
+			//
 			currentJson = json.GetCurrentJSON();  			
 			currentPlan = planner.GetPlan(currentJson); //pobierz plan			
 
