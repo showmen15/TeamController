@@ -13,6 +13,7 @@ public class TeamController {
 
 	private PlannerController planner;
 	private JsonHelper json;
+	private ArrayList<Node> nodes; 
 
 	private String currentJson;
 	private String currentPlan;
@@ -34,29 +35,33 @@ public class TeamController {
 		//lokalizacja pliku JASON-a
 
 		String URL = "";
-		String sPath =  "D:/Desktop/LabiryntMapy/Test4.roson"; //"./map/MazeRoboLabFullMap_graph.roson";
+		String sPath =  "./map/MazeRoboLabFullMap_graph.roson"; //"D:/Desktop/LabiryntMapy/Test4.roson";
 		String sIP = "127.0.0.1";
 		int port = 13000;
 			
-		json = new JsonHelper(sPath);		
+		json = new JsonHelper(sPath);
+		nodes = json.GetNodesList();
+		
 		planner = new  PlannerController(sIP,port); //new PlannerController(URL);
 
-		String  sIPLogger = "192.168.2.102"; //ustawic na szsz
+		String  sIPLogger = "192.168.2.110"; //ustawic na szsz
 		int sPortLogger = 4321;
 		logger = new LoggerUDP(sIPLogger,sPortLogger);
 				
 		robots = new ArrayList<RobotController>();
 
-		//AddRobot("192.168.2.210", "Robot210");
-		//AddRobot("192.168.2.206", "Robot206");
-		//AddRobot("192.168.2.208", "Robot208");
-		//AddRobot("192.168.2.209", "Robot209");
-		//AddRobot("192.168.2.203", "Robot203");		
+		AddRobot("192.168.2.100", "Robot100",1);
+		AddRobot("192.168.2.100", "Robot200",2);
+		 //AddRobot("192.168.2.208", "Robot208",1);
+		//AddRobot("192.168.2.209", "Robot209",2);
+		//AddRobot("192.168.2.203", "Robot203",3);
+		//AddRobot("192.168.2.210", "Robot210",4);
+		//AddRobot("192.168.2.206", "Robot206",5);
 	}
 
-	private void AddRobot(String IP,String RobotID)
+	private void AddRobot(String IP,String RobotID,int iRobotID)
 	{
-		robots.add(new RobotController(IP, RobotID));		
+		robots.add(new RobotController(IP, RobotID,iRobotID));		
 	}
 
 	private String[] parseTasksFromPlanner(String tasks)
@@ -76,8 +81,11 @@ public class TeamController {
 	{
 		String[] plansForRobot = parseTasksFromPlanner(tasks);
 
-		for (int i = 0; i < plansForRobot.length; i++) 		
+		for (int i = 0; i < plansForRobot.length; i++)
+		{
 			robots.get(i).SetTask(plansForRobot[i]);
+			robots.get(i).SetNodeKind(nodes);
+		}
 	}
 
 	private void initRobotsLocation() throws Exception
@@ -135,6 +143,9 @@ public class TeamController {
 			currentPlan = planner.GetPlan(currentJson); //pobierz plan			
 
 			manageTasksToRobot(currentPlan);  //rozdziel zadania na roboty
+			
+			sendVisualisation(); //odswiez wizualizacje
+			
 
 			runGoToPointRobots(); //wysli zadania do robotow
 

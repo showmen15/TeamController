@@ -63,7 +63,7 @@ public class LoggerUDP
 	{
 		String tempRobot = "";
 
-		tempRobot += robot.ID.toString() + ";" + robot.X + ";" + robot.Y + ";" + robot.Angle + ";";
+		tempRobot += robot.ID.toString() + ";" + robot.X + ";" + robot.Y + ";" + robot.Angle + ";" + robot.RobotID + ";" ;
 
 		ArrayList<Task> tempTasks = robot.GetGoToTasksList();  //GetTasksList();
 		Task itemTask; 
