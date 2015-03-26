@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import TC.Task.KindTaskType;
 import TC.Task.TaskType;
 import pl.edu.agh.amber.location.LocationCurrent;
 import pl.edu.agh.amber.drivetopoint.Point;
@@ -211,9 +212,37 @@ public class RobotController
 		List<Point> empty = new ArrayList<>();
 		driveToPoint.SetTargets(empty);
 	}
-	
-	//	public void TestTaskList()
-	//	{
-	//		
-	//	}	
+
+	public void SetNodeKind(ArrayList<Node> nodes) 
+	{
+		String nodeTempName;
+
+		for(int i = 0; i < Tasks.size(); i++)
+		{
+			nodeTempName = getNodeKind(nodes,Tasks.get(i).Name);
+
+			switch (nodeTempName) 
+			{
+			case "spaceNode":
+				Tasks.get(i).Kind = KindTaskType.spaceNode;				
+				break;
+			case "gateNode":
+				Tasks.get(i).Kind = KindTaskType.gateNode;
+			default:
+				Tasks.get(i).Kind = KindTaskType.UnKnown;
+				break;
+			}
+		}	
+	}
+
+	private String getNodeKind(ArrayList<Node> nodes,String nodeName)
+	{
+		for(int i = 0; i < nodes.size();i++)
+		{
+			if(nodes.get(i).ID.compareTo(nodeName) == 0)
+				return nodes.get(i).Kind;
+		}
+		return "";
+	}
+
 }

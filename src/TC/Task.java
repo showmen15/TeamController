@@ -13,9 +13,9 @@ public class Task
 	public double Y;
 	public TaskType Type;
 	public String Name;
+	public KindTaskType Kind;
 	
 	public Boolean IsEnd;
-
 
 	public Task(String sTask)
 	{
@@ -24,6 +24,7 @@ public class Task
 		OrgTask = sTask;
 		TeskID = new SimpleDateFormat("yyyyMMddHHmmssSSS").format(new Date());
 		IsEnd = false;
+		Kind = KindTaskType.UnKnown;
 	}
 
 	private String[] parseTask(String sTask)
@@ -55,4 +56,6 @@ public class Task
 	}
 
 	public enum TaskType { UnKnown,GoTo,Search };
+	
+	public enum KindTaskType { UnKnown,spaceNode,gateNode}
 }

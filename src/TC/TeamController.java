@@ -13,6 +13,7 @@ public class TeamController {
 
 	private PlannerController planner;
 	private JsonHelper json;
+	private ArrayList<Node> nodes; 
 
 	private String currentJson;
 	private String currentPlan;
@@ -38,7 +39,9 @@ public class TeamController {
 		String sIP = "127.0.0.1";
 		int port = 13000;
 			
-		json = new JsonHelper(sPath);		
+		json = new JsonHelper(sPath);
+		nodes = json.GetNodesList();
+		
 		planner = new  PlannerController(sIP,port); //new PlannerController(URL);
 
 		String  sIPLogger = "192.168.2.102"; //ustawic na szsz
@@ -76,8 +79,11 @@ public class TeamController {
 	{
 		String[] plansForRobot = parseTasksFromPlanner(tasks);
 
-		for (int i = 0; i < plansForRobot.length; i++) 		
+		for (int i = 0; i < plansForRobot.length; i++)
+		{
 			robots.get(i).SetTask(plansForRobot[i]);
+			robots.get(i).SetNodeKind(nodes);
+		}
 	}
 
 	private void initRobotsLocation() throws Exception

@@ -20,6 +20,7 @@ public class JsonHelper
 	private JSONArray spaces;
 	private JSONArray nodeNodes;
 	private JSONArray gates;
+	private JSONArray nodes;
 
 	private ArrayList<BB> box;
 
@@ -39,7 +40,8 @@ public class JsonHelper
 			spaces = currentJASON.getJSONArray("spaces");
 			nodeNodes = currentJASON.getJSONArray("node-nodes");
 			gates = currentJASON.getJSONArray("gates");
-			
+			nodes = currentJASON.getJSONArray("nodes");
+					
 			box = new ArrayList<>();
 
 			initBB();
@@ -342,5 +344,20 @@ public class JsonHelper
 		}
 
 		return null;
+	}
+
+	public ArrayList<Node> GetNodesList() throws JSONException 
+	{
+		ArrayList<Node> temp = new ArrayList<Node>();
+		JSONObject tempObj;
+		
+		for(int i = 0; i < nodes.length(); i++)
+		{
+			tempObj = nodes.getJSONObject(i);
+			
+			temp.add(new Node(tempObj.getString("id"),tempObj.getString("kind")));			
+		}
+
+		return temp;
 	}
 }
