@@ -43,8 +43,8 @@ public class PlannerController
 		//logika dla TCP awaryjna
 		String tmpPlan;
 
-		//tmpPlan = tcpClient.CommunicateWithPlanner(sJSON); 
-		//return tmpPlan;
+		tmpPlan = tcpClient.CommunicateWithPlanner(sJSON); 
+		return tmpPlan;
 
 		//logika dla Rest-a
 		//String tempJSONRequest = getRequest(sJSON);
@@ -64,7 +64,7 @@ public class PlannerController
 		
 		//return "[[]]"; //przejazd pojedynczego robota
 		
-		return "[['goto 2.5 4.08 Node172', 'search Space171', 'goto 2.10046423835 4.27981430466 Node173', 'goto 1.89958397485 4.2797226499 Node163', 'goto 1.7 4.08 Node162', 'goto 1.50041602515 3.8802773501 Node164', 'goto 1.29951923803 3.88013736056 Node209', 'goto 0.7 4.08 Node207', 'search Space206', 'goto 0.550089970495 3.3604918387 Node208', 'goto 0.550427231222 3.15974024342 Node222', 'goto 0.61041489197 2.60027904239 Node224'],['goto 0.609870631957 2.39951702597 Node186', 'goto 0.46 1.94 Node183', 'goto 0.275156841626 1.48047476384 Node185', 'goto 0.275068197237 1.2795046727 Node235', 'goto 0.37 0.69 Node234', 'goto 0.63 0.94 Node236', 'goto 0.86 0.94 Node237', 'goto 1.56 0.9 Node238', 'goto 1.65 1.3 Node239', 'goto 1.65 1.49 Node239', 'goto 1.65 1.96 Node240']]"; //przejazd dwoch robotow
+		//return "[['goto 2.5 4.08 Node172', 'search Space171', 'goto 2.10046423835 4.27981430466 Node173', 'goto 1.89958397485 4.2797226499 Node163', 'goto 1.7 4.08 Node162', 'goto 1.50041602515 3.8802773501 Node164', 'goto 1.29951923803 3.88013736056 Node209', 'goto 0.7 4.08 Node207', 'search Space206', 'goto 0.550089970495 3.3604918387 Node208', 'goto 0.550427231222 3.15974024342 Node222', 'goto 0.61041489197 2.60027904239 Node224'],['goto 0.609870631957 2.39951702597 Node186', 'goto 0.46 1.94 Node183', 'goto 0.275156841626 1.48047476384 Node185', 'goto 0.275068197237 1.2795046727 Node235', 'goto 0.37 0.69 Node234', 'goto 0.63 0.94 Node236', 'goto 0.86 0.94 Node237', 'goto 1.56 0.9 Node238', 'goto 1.65 1.3 Node239', 'goto 1.65 1.49 Node239', 'goto 1.65 1.96 Node240']]"; //przejazd dwoch robotow
 		//return "[['goto 2.5 4.08 Node172', 'search Space171', 'goto 2.10046423835 4.27981430466 Node173', 'goto 1.89958397485 4.2797226499 Node163', 'goto 1.7 4.08 Node162', 'goto 1.50041602515 3.8802773501 Node164', 'goto 1.29951923803 3.88013736056 Node209', 'goto 0.7 4.08 Node207', 'search Space206', 'goto 0.550089970495 3.3604918387 Node208', 'goto 0.550427231222 3.15974024342 Node222', 'goto 0.61041489197 2.60027904239 Node224', 'goto 0.609870631957 2.39951702597 Node186', 'goto 0.46 1.94 Node183'],['goto 0.37 0.69 Node234', 'goto 0.63 0.94 Node236', 'goto 0.86 0.94 Node237', 'goto 1.56 0.9 Node238', 'goto 1.65 1.31 Node240', 'goto 1.65 1.49 Node239', 'goto 1.62 1.97 Node239']]"; //przejazd dwoch robotow	}	
 		//return "[['goto 2.5 4.08 Node172', 'search Space171', 'goto 2.10046423835 4.27981430466 Node173', 'goto 1.89958397485 4.2797226499 Node163', 'goto 1.7 4.08 Node162', 'goto 1.50041602515 3.8802773501 Node164', 'goto 1.29951923803 3.88013736056 Node209', 'goto 0.7 4.08 Node207', 'search Space206', 'goto 0.550089970495 3.3604918387 Node208', 'goto 0.550427231222 3.15974024342 Node222', 'goto 0.61041489197 2.60027904239 Node224', 'goto 0.609870631957 2.39951702597 Node186', 'goto 0.46 1.94 Node183'],['goto 0.46 1.94 Node183', 'goto 0.275156841626 1.48047476384 Node185', 'goto 0.275068197237 1.2795046727 Node235', 'goto 0.37 0.69 Node234', 'goto 0.63 0.94 Node236', 'goto 0.86 0.94 Node237', 'goto 1.56 0.9 Node238', 'goto 1.65 1.3 Node239', 'goto 1.65 1.49 Node239', 'goto 1.65 1.96 Node240']]"; //przejazd dwoch robotow	}
 		
