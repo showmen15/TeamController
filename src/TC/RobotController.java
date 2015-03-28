@@ -88,7 +88,7 @@ public class RobotController
 
 		for (int i = 0; i < Tasks.size(); i++) 
 		{
-			if(Tasks.get(i).Type == TaskType.GoTo)
+			if(Tasks.get(i).Type == TaskType.GoTo && Tasks.get(i).IsEnd == false)
 				tmpPoint.add(new Point(Tasks.get(i).X,Tasks.get(i).Y,R));
 		}
 

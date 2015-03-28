@@ -35,8 +35,8 @@ public class TeamController {
 		//lokalizacja pliku JASON-a
 
 		String URL = "";
-		String sPath =  "./map/MazeRoboLabFullMap_graph.roson"; //"D:/Desktop/LabiryntMapy/Test4.roson";
-		String sIP = "127.0.0.1";
+		String sPath =  "./map/MazeRoboLabFullMap_graph.roson"; //"./map/Test2RobotyReplanowanie.roson"; //"./map/MazeRoboLabFullMap_graph.roson"; //"D:/Desktop/LabiryntMapy/Test4.roson";
+		String sIP = "192.168.2.100";//"127.0.0.1";
 		int port = 13000;
 			
 		json = new JsonHelper(sPath);
@@ -44,13 +44,15 @@ public class TeamController {
 		
 		planner = new  PlannerController(sIP,port); //new PlannerController(URL);
 
-		String  sIPLogger = "192.168.2.101"; //ustawic na szsz
+		String  sIPLogger = "192.168.2.110"; //ustawic na szsz
 		int sPortLogger = 4321;
 		logger = new LoggerUDP(sIPLogger,sPortLogger);
 				
 		robots = new ArrayList<RobotController>();
 
-		AddRobot("192.168.2.209", "Robot209",1);
+		AddRobot("192.168.2.208", "Robot208",1);
+		AddRobot("192.168.2.208", "Robot209",2);
+		//AddRobot("192.168.2.209", "Robot209",2);
 		//AddRobot("192.168.2.100", "Robot200",2);
 		 //AddRobot("192.168.2.208", "Robot208",1);
 		//AddRobot("192.168.2.209", "Robot209",2);
@@ -124,6 +126,79 @@ public class TeamController {
 			robots.get(i).StopRobot();		
 	}
 	
+	public void RunAwaryjne()
+	{
+		waitTime = 500;
+
+		try
+		{
+			stopAllRobot();
+			logger.SendReset();
+			
+			
+			initRobotsLocation(); //pobranie startowej pozycji robota
+			putRobotsInToMap(); //umiesc roboty na mapie 						
+
+			currentJson = json.GetCurrentJSON();  
+			currentPlan = planner.GetPlan(currentJson,1); //pobierz plan	
+						
+			manageTasksToRobot(currentPlan);  //rozdziel zadania na roboty
+
+			sendVisualisation(); //odswiez wizualizacje
+			
+			currentPlan = planner.GetPlan(currentJson,2); //pobierz plan	
+			
+			manageTasksToRobot(currentPlan);  //rozdziel zadania na roboty
+
+			sendVisualisation(); //odswiez wizualizacje
+			
+			
+						
+			//json.SetSpaceSearched("Space171"); //ustawianie przeszukanych pomieszczen
+			//json.SetSpaceSearched("Space161"); //ustawianie przeszukanych pomieszczen
+
+			//json.GateBlocked("Wall158"); //ustawianie zamknietych drzwi
+			
+			//json.SetSpaceSearched("Space182"); //ustawianie przeszukanych pomieszczen
+			//json.SetSpaceSearched("Space233"); //ustawianie przeszukanych pomieszczen
+			
+			//sendVisualisation(); //odswiez wizualizacje
+						
+			//sendVisualisation(); //odswiez wizualizacje
+
+		//	json.GateBlocked("Wall127"); //ustawianie zamknietych drzwi			
+			
+			
+			
+			int i = 0;
+			
+			while(i < 100)
+			{
+			
+			sendVisualisation(); //odswiez wizualizacje
+			sendVisualisation(); //odswiez wizualizacje
+			}
+
+			
+			
+			runGoToPointRobots(); //wyslij zadania do robotowrunGoToPointRobots(); //wyslij zadania do robotow
+
+			while(true)
+			{
+				Thread.sleep(waitTime); //czekaj na wyniki
+
+				checkVisitedTask(); //sprawdz czy robot dotarl do punktow 
+				
+				sendVisualisation(); //odswiez wizualizacje
+			}			
+		}
+		catch(Exception ex)
+		{
+			System.out.println("Run " + ex);
+			ex.printStackTrace();
+		}
+	}	
+	
 	public void Run()
 	{
 		waitTime = 500;
@@ -131,24 +206,44 @@ public class TeamController {
 		try
 		{
 			stopAllRobot();
+			logger.SendReset();
+			
 			
 			initRobotsLocation(); //pobranie startowej pozycji robota
 			putRobotsInToMap(); //umiesc roboty na mapie 						
-
-			//json.GateBlocked("Wall127"); //ustawianie zamknietych drzwi			
-			//json.SetSpaceSearched("Space129"); //ustawianie przeszukanych pomieszczen
-		
+			
 			//
-			currentJson = json.GetCurrentJSON();  			
-			currentPlan = planner.GetPlan(currentJson); //pobierz plan			
-
+			currentJson = json.GetCurrentJSON();  
+			currentPlan = planner.GetPlan(currentJson,2); //pobierz plan	
+						
 			manageTasksToRobot(currentPlan);  //rozdziel zadania na roboty
 			
-			sendVisualisation(); //odswiez wizualizacje
-			sendVisualisation(); //odswiez wizualizacje
-			
+			//currentPlan = planner.GetPlan(currentJson); //pobierz plan			
+						
+			//json.SetSpaceSearched("Space171"); //ustawianie przeszukanych pomieszczen
+			//json.SetSpaceSearched("Space161"); //ustawianie przeszukanych pomieszczen
 
-			runGoToPointRobots(); //wysli zadania do robotow
+			//json.GateBlocked("Wall158"); //ustawianie zamknietych drzwi
+			
+			//json.SetSpaceSearched("Space182"); //ustawianie przeszukanych pomieszczen
+			//json.SetSpaceSearched("Space233"); //ustawianie przeszukanych pomieszczen
+			
+			//sendVisualisation(); //odswiez wizualizacje
+						
+			//sendVisualisation(); //odswiez wizualizacje
+
+		//	json.GateBlocked("Wall127"); //ustawianie zamknietych drzwi			
+			
+			int i = 0;
+			
+			while(i < 100)
+			{
+			
+			sendVisualisation(); //odswiez wizualizacje
+			sendVisualisation(); //odswiez wizualizacje
+			}
+
+			runGoToPointRobots(); //wyslij zadania do robotow
 
 			while(true)
 			{

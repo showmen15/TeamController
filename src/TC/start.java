@@ -63,7 +63,9 @@ public class start
 	public static void main(String[] args) throws JSONException, IOException, InterruptedException 
 	{		
 		TeamController tc = new TeamController("");
-		tc.Run();
+		tc.RunAwaryjne();
+		
+		//tc.Run();
 		
 		//planer wersja awaryjna 
 		/*String sIP = "127.0.0.1";

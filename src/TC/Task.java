@@ -22,7 +22,7 @@ public class Task
 		String[] taskList = parseTask(sTask);
 		InitTaskObject(taskList);
 		OrgTask = sTask;
-		TeskID = new SimpleDateFormat("yyyyMMddHHmmssSSS").format(new Date());
+		TeskID = "X:" + Double.toString(X) + "Y:" + Double.toString(Y) + "TaskName:" + Name + new SimpleDateFormat("yyyyMMddHHmmssSSS").format(new Date());		
 		IsEnd = false;
 		Kind = KindTaskType.UnKnown;
 	}
