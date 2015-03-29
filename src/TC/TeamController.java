@@ -44,14 +44,14 @@ public class TeamController {
 		
 		planner = new  PlannerController(sIP,port); //new PlannerController(URL);
 
-		String  sIPLogger = "192.168.2.110"; //ustawic na szsz
+		String  sIPLogger = "192.168.2.101"; //ustawic na szsz
 		int sPortLogger = 4321;
 		logger = new LoggerUDP(sIPLogger,sPortLogger);
 				
 		robots = new ArrayList<RobotController>();
 
-		AddRobot("192.168.2.208", "Robot208",1);
-		AddRobot("192.168.2.208", "Robot209",2);
+		AddRobot("192.168.2.209", "Robot209",1);
+		//AddRobot("192.168.2.208", "Robot209",2);
 		//AddRobot("192.168.2.209", "Robot209",2);
 		//AddRobot("192.168.2.100", "Robot200",2);
 		 //AddRobot("192.168.2.208", "Robot208",1);
@@ -218,6 +218,8 @@ public class TeamController {
 						
 			manageTasksToRobot(currentPlan);  //rozdziel zadania na roboty
 			
+			sendVisualisation(); //odswiez wizualizacje
+			
 			//currentPlan = planner.GetPlan(currentJson); //pobierz plan			
 						
 			//json.SetSpaceSearched("Space171"); //ustawianie przeszukanych pomieszczen
@@ -234,14 +236,14 @@ public class TeamController {
 
 		//	json.GateBlocked("Wall127"); //ustawianie zamknietych drzwi			
 			
-			int i = 0;
-			
-			while(i < 100)
-			{
-			
-			sendVisualisation(); //odswiez wizualizacje
-			sendVisualisation(); //odswiez wizualizacje
-			}
+//			int i = 0;
+//			
+//			while(i < 100)
+//			{
+//			
+//			sendVisualisation(); //odswiez wizualizacje
+//			sendVisualisation(); //odswiez wizualizacje
+//			}
 
 			runGoToPointRobots(); //wyslij zadania do robotow
 
