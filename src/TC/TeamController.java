@@ -51,7 +51,11 @@ public class TeamController {
 		robots = new ArrayList<RobotController>();
 
 		AddRobot("192.168.2.209", "Robot209",1);
-		//AddRobot("192.168.2.208", "Robot209",2);
+		AddRobot("192.168.2.208", "Robot208",2);
+		
+		
+		
+		
 		//AddRobot("192.168.2.209", "Robot209",2);
 		//AddRobot("192.168.2.100", "Robot200",2);
 		 //AddRobot("192.168.2.208", "Robot208",1);
@@ -126,6 +130,27 @@ public class TeamController {
 			robots.get(i).StopRobot();		
 	}
 	
+	private Boolean checkIfRobotGetPoint()
+	{
+	  ArrayList<Task> temp = robots.get(0).GetTasksList();
+	
+	  return temp.get(3).IsEnd;	  
+	}	
+	
+	
+	private void ManageTaskForRobot()
+	{
+		robots.get(1).Tasks.add(new Task("goto 2.02 2.4 Node777"));
+		robots.get(1).Tasks.add(new Task("goto 2.02 2.6 Node778"));
+		robots.get(1).Tasks.add(new Task("goto 1.18 2.88 Node779"));		
+		robots.get(1).Tasks.add(new Task("goto 0.550427231222 3.15974024342 Node222"));
+		
+		robots.get(1).Tasks.add(new Task("goto 0.550089970495 3.3604918387 Node208"));
+		robots.get(1).Tasks.add(new Task("goto 0.7 4.08 Node207"));
+		
+	}
+	
+	
 	public void RunAwaryjne()
 	{
 		waitTime = 500;
@@ -146,14 +171,14 @@ public class TeamController {
 
 			sendVisualisation(); //odswiez wizualizacje
 			
-			currentPlan = planner.GetPlan(currentJson,2); //pobierz plan	
-			
-			manageTasksToRobot(currentPlan);  //rozdziel zadania na roboty
-
-			sendVisualisation(); //odswiez wizualizacje
-			
-			
-						
+//			currentPlan = planner.GetPlan(currentJson,2); //pobierz plan	
+//			
+//			manageTasksToRobot(currentPlan);  //rozdziel zadania na roboty
+//
+//			logger.SendReset();
+//			
+//			sendVisualisation(); //odswiez wizualizacje
+									
 			//json.SetSpaceSearched("Space171"); //ustawianie przeszukanych pomieszczen
 			//json.SetSpaceSearched("Space161"); //ustawianie przeszukanych pomieszczen
 
@@ -167,24 +192,39 @@ public class TeamController {
 			//sendVisualisation(); //odswiez wizualizacje
 
 		//	json.GateBlocked("Wall127"); //ustawianie zamknietych drzwi			
-			
-			
-			
-			int i = 0;
-			
-			while(i < 100)
-			{
-			
-			sendVisualisation(); //odswiez wizualizacje
-			sendVisualisation(); //odswiez wizualizacje
-			}
-
-			
+		
 			
 			runGoToPointRobots(); //wyslij zadania do robotowrunGoToPointRobots(); //wyslij zadania do robotow
-
+			
 			while(true)
 			{
+				if(checkIfRobotGetPoint())
+				{
+					robots.get(0).StopRobot();
+					
+					robots.get(0).RemoveNotFinishTask();
+					
+					ManageTaskForRobot();
+					
+					robots.get(1).SendTargetsList();
+		
+					logger.SendReset();
+					
+					sendVisualisation(); //odswiez wizualizacje
+					
+					while(true)
+					{
+						Thread.sleep(waitTime); //czekaj na wyniki
+
+						robots.get(1).CompleteTasks();
+						
+						//checkVisitedTask(); //sprawdz czy robot dotarl do punktow 
+						
+						sendVisualisation(); //odswiez wizualizacje
+					}	
+				}
+				
+				
 				Thread.sleep(waitTime); //czekaj na wyniki
 
 				checkVisitedTask(); //sprawdz czy robot dotarl do punktow 
@@ -218,7 +258,7 @@ public class TeamController {
 						
 			manageTasksToRobot(currentPlan);  //rozdziel zadania na roboty
 			
-			sendVisualisation(); //odswiez wizualizacje
+			sendVisualisation(); //ods wiez wizualizacje
 			
 			//currentPlan = planner.GetPlan(currentJson); //pobierz plan			
 						

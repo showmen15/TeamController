@@ -29,7 +29,7 @@ public class RobotController
 	private LocationController location;
 	private DriveToPointController driveToPoint;
 
-	private ArrayList<Task> Tasks;
+	public ArrayList<Task> Tasks;
 
 	private ArrayList<Task> GoToTasks;
 	//private ArrayList<Task> EndTasks;
@@ -132,7 +132,8 @@ public class RobotController
 		driveToPoint.RequestVisitedTargets();
 		List<Point> visitedTargets = driveToPoint.getVisitedTargets();
 		GetLocation();
-		markTaskAsEnd(visitedTargets.size());
+		//markTaskAsEnd(visitedTargets.size());
+		markTaskAsEnd(visitedTargets);
 
 		if(targets.size() == visitedTargets.size())
 		{
@@ -153,6 +154,31 @@ public class RobotController
 	{
 		for(int i = 0; i < endTaskNumber; i++)
 			GoToTasks.get(i).IsEnd = true;				
+	}
+
+	private void markTaskAsEnd(List<Point> visitedTargets)
+	{
+		Task temp;
+
+		for(int i = 0; i < visitedTargets.size(); i++)
+		{
+			temp = findTask(visitedTargets.get(i).x,(visitedTargets.get(i).y));
+
+			if(temp != null)
+			{
+				temp.IsEnd = true;
+			}			
+		}	
+	}
+
+	private Task findTask(double x,double y)
+	{		
+		for (int i = 0; i < Tasks.size(); i++) 
+		{
+			if(Tasks.get(i).X == x && Tasks.get(i).Y == y)
+				return Tasks.get(i);			
+		}
+		return null;
 	}
 
 	private ArrayList<Task> getGoToTask(ArrayList<Task> tasks)
@@ -247,4 +273,24 @@ public class RobotController
 		return "";
 	}
 
+	public void RemoveNotFinishTask() 
+	{
+		for(int i = 0; i < Tasks.size();i++)
+		{
+			if(!Tasks.get(i).IsEnd)
+			{			    
+				Tasks.remove(i);
+				i--;
+			}
+		}		
+		
+		for(int i = 0; i < GoToTasks.size();i++)
+		{
+			if(!GoToTasks.get(i).IsEnd)
+			{
+				GoToTasks.remove(i);
+				i--;
+			}
+		}			
+	}
 }
